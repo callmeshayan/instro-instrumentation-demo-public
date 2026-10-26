@@ -18,7 +18,7 @@ with section("1 · Start on Today", "See what needs attention and get a quick vi
         "The cards show open leads, open RFQs, quotes sent this week, and estimated pipeline value. "
         "The action queue brings due follow-ups, quote approvals, supplier chasers, and backup reminders together."
     )
-    st.page_link("Home.py", label="Open Today", icon=":material/today:")
+    st.caption("Use Today in the sidebar to return to the home page.")
 
 with section("2 · Add a lead", "Create a fictional prospect and keep its next step visible."):
     st.write(
