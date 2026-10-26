@@ -1,6 +1,15 @@
 """Application shell: shared page configuration and workflow navigation."""
 
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+# Streamlit Cloud executes this entrypoint from app/, so add the repo root
+# before importing the app package and resolving page files.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from app.ui import apply_global_styles
 
