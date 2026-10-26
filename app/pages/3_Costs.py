@@ -111,7 +111,8 @@ if parsed_lines:
             offers["authorized status"] = offers["supplier_id"].astype(str).map(supplier_qualified).fillna("unknown")
             validity = pd.to_datetime(offers["valid_until"], errors="coerce")
             offers["price validity"] = offers["valid_until"].fillna("").astype(str).replace("nan", "")
-            offers.loc[validity.notna() & (validity.dt.date < date.today()), "price validity"] += " · EXPIRED"
+            expired = validity.notna() & (validity < pd.Timestamp(date.today()))
+            offers.loc[expired, "price validity"] += " · EXPIRED"
             offers = offers.sort_values("landed_unit_eur")
             view = offers.rename(columns={"supplier_id": "Supplier ID", "supplier": "Supplier",
                                           "model": "Model offered", "unit_cost_eur": "Unit cost (€)",
