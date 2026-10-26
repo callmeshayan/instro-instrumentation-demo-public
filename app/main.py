@@ -1,42 +1,12 @@
-"""Application shell: shared page configuration and workflow navigation."""
+"""Temporary privacy bootstrap page for the Streamlit Cloud deployment."""
 
 import streamlit as st
 
-from app.ui import apply_global_styles
-
 st.set_page_config(
-    page_title="Instro Dashboard",
-    page_icon="📈",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    page_title="Instro Demo Setup",
+    page_icon="🔒",
+    layout="centered",
 )
-apply_global_styles()
-st.info('COMPANY DEMO · Fictional training records only. Do not enter or upload real customer, supplier, or tender data. Demo changes may reset.')
-
-with st.sidebar:
-    st.markdown("### INSTRO")
-    st.caption("SALES OPERATIONS")
-    st.divider()
-
-today = st.Page("Home.py", title="Today", icon=":material/today:", default=True)
-leads = st.Page("pages/1_Leads.py", title="Leads", icon=":material/group:")
-rfqs = st.Page("pages/2_RFQs.py", title="RFQs", icon=":material/inbox:")
-costs = st.Page("pages/3_Costs.py", title="Costs", icon=":material/payments:")
-quote_builder = st.Page("pages/4_Quote_Builder.py", title="Quote Builder", icon=":material/receipt_long:")
-review = st.Page("pages/6_Review.py", title="Weekly review", icon=":material/insights:")
-catalog = st.Page("pages/7_Catalog.py", title="Catalog", icon=":material/inventory_2:")
-settings = st.Page("pages/5_Settings.py", title="Settings", icon=":material/settings:")
-tenders = st.Page("pages/8_Tenders.py", title="Tenders", icon=":material/travel_explore:")
-
-page = st.navigation(
-    {
-        "": [today],
-        "Sales": [leads],
-        "Deals": [rfqs, costs, quote_builder],
-        "Insights": [review, tenders],
-        "Setup": [catalog, settings],
-    },
-    position="sidebar",
-    expanded=True,
-)
-page.run()
+st.title("Instro Dashboard")
+st.info("The private company demo is being prepared. Access will be enabled by invitation.")
+st.caption("No dashboard records are available on this setup page.")
