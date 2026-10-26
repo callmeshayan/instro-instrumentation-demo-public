@@ -90,6 +90,43 @@ if parsed_lines:
         st.dataframe(styled, width="stretch", hide_index=True,
                      column_config={"Landed / unit (€)": st.column_config.NumberColumn(format="€%.2f")})
 
+    st.subheader("Supplier comparison")
+    st.caption("Compare landed cost, lead time, validity, and supplier qualification for each line. Lowest price is a reference, not an automatic award decision.")
+    supplier_names = suppliers.set_index(suppliers["supplier_id"].astype(str))["company"].fillna("").to_dict() \
+        if not suppliers.empty else {}
+    supplier_qualified = suppliers.set_index(suppliers["supplier_id"].astype(str))["authorized"].fillna("unknown").to_dict() \
+        if not suppliers.empty else {}
+    for parsed_line in parsed_lines:
+        line_no = str(parsed_line.get("line"))
+        offers = current[current["line"].astype(str) == line_no].copy() if not current.empty else current.copy()
+        title = f"Line {line_no} · {parsed_line.get('tag') or ''} {parsed_line.get('description') or parsed_line.get('item') or ''}".strip()
+        with st.expander(title, expanded=len(parsed_lines) == 1):
+            if offers.empty:
+                st.info("No supplier offers saved for this line yet.")
+                continue
+            offers["landed_unit_eur"] = offers.apply(landed_unit, axis=1)
+            qty = pd.to_numeric(pd.Series([parsed_line.get("quantity")]), errors="coerce").fillna(0).iloc[0]
+            offers["extended_landed_eur"] = offers["landed_unit_eur"] * float(qty)
+            offers["supplier"] = offers["supplier_id"].astype(str).map(supplier_names).fillna("")
+            offers["authorized status"] = offers["supplier_id"].astype(str).map(supplier_qualified).fillna("unknown")
+            validity = pd.to_datetime(offers["valid_until"], errors="coerce")
+            offers["price validity"] = offers["valid_until"].fillna("").astype(str).replace("nan", "")
+            offers.loc[validity.notna() & (validity.dt.date < date.today()), "price validity"] += " · EXPIRED"
+            offers = offers.sort_values("landed_unit_eur")
+            view = offers.rename(columns={"supplier_id": "Supplier ID", "supplier": "Supplier",
+                                          "model": "Model offered", "unit_cost_eur": "Unit cost (€)",
+                                          "freight_eur": "Freight (€)", "duty_eur": "Duty (€)",
+                                          "landed_unit_eur": "Landed / unit (€)",
+                                          "extended_landed_eur": "Extended landed (€)",
+                                          "lead_time": "Lead time", "authorized status": "Authorized",
+                                          "price validity": "Price validity", "quote_ref": "Supplier ref"})
+            columns = ["Supplier", "Supplier ID", "Model offered", "Unit cost (€)", "Freight (€)", "Duty (€)",
+                       "Landed / unit (€)", "Extended landed (€)", "Lead time", "Authorized", "Price validity", "Supplier ref"]
+            st.dataframe(view[columns], width="stretch", hide_index=True,
+                         column_config={column: st.column_config.NumberColumn(format="€%.2f") for column in
+                                        ["Unit cost (€)", "Freight (€)", "Duty (€)", "Landed / unit (€)", "Extended landed (€)"]})
+            st.caption("Authorized status is supplier-record information. Verify the scope and validity of authorization for the proposed brand and country.")
+
 st.subheader("1. Request prices from suppliers")
 if not line_options:
     st.caption("Supplier requests need the RFQ's line items (enter them on the RFQs page).")

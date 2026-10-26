@@ -253,6 +253,8 @@ else:
             st.dataframe(styler, width="stretch", hide_index=True)
             tbc_total = sum(len(tbc_fields(line)) for line in lines)
             st.caption(f"{len(lines)} line(s), {tbc_total} TBC field(s) highlighted in red.")
+            st.page_link("pages/9_Technical_Review.py", label="Open technical review for these requirements",
+                         icon=":material/fact_check:")
 
 st.subheader("Tender attachments · local review")
 st.caption("Upload documents you downloaded from the official notice. Files stay in this repo and are never sent automatically.")

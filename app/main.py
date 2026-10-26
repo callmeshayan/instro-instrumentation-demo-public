@@ -32,6 +32,7 @@ guide = st.Page("pages/0_Tutorial.py", title="Tutorial", icon=":material/menu_bo
 leads = st.Page("pages/1_Leads.py", title="Leads", icon=":material/group:")
 rfqs = st.Page("pages/2_RFQs.py", title="RFQs", icon=":material/inbox:")
 costs = st.Page("pages/3_Costs.py", title="Costs", icon=":material/payments:")
+technical_review = st.Page("pages/9_Technical_Review.py", title="Technical review", icon=":material/fact_check:")
 quote_builder = st.Page("pages/4_Quote_Builder.py", title="Quote Builder", icon=":material/receipt_long:")
 review = st.Page("pages/6_Review.py", title="Weekly review", icon=":material/insights:")
 catalog = st.Page("pages/7_Catalog.py", title="Catalog", icon=":material/inventory_2:")
@@ -43,7 +44,7 @@ page = st.navigation(
         "Start here": [guide],
         "": [today],
         "Sales": [leads],
-        "Deals": [rfqs, costs, quote_builder],
+        "Deals": [rfqs, costs, technical_review, quote_builder],
         "Insights": [review, tenders],
         "Setup": [catalog, settings],
     },

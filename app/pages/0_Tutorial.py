@@ -9,7 +9,7 @@ st.warning(
     "Use fictional information only—never enter real customer, supplier, pricing, or tender data."
 )
 st.info(
-    "Recommended path: Today → Leads → RFQs → Costs → Quote Builder → Weekly review. "
+    "Recommended path: Today → Leads → RFQs → Costs → Technical review → Quote Builder → Weekly review. "
     "DEMO-001 is preloaded with two fictional product lines and example supplier costs."
 )
 
@@ -41,14 +41,23 @@ with section("3 · Review or create an RFQ", "Turn a customer request into struc
 
 with section("4 · Record supplier costs", "Compare offers by line and calculate landed unit cost."):
     st.write(
-        "DEMO-001 already has fictional costs for both lines. Select an RFQ and line to add or update an offer. "
+        "DEMO-001 already has a fictional supplier offer for both lines. Add competing offers to compare landed cost, "
+        "supplier qualification, model, lead time, price validity, and supplier reference side by side. Choose the source "
+        "for each quote line in Quote Builder; the lowest landed cost is only a starting suggestion. "
         "Supplier emails can be drafted and opened in your mail app; the dashboard never sends them automatically."
     )
     st.page_link("pages/3_Costs.py", label="Open Costs", icon=":material/payments:")
 
-with section("5 · Build a quote", "Review internal pricing separately from the customer-facing quote."):
+with section("5 · Check technical compliance", "Compare each requested specification with the proposed offer and record evidence."):
     st.write(
-        "Select DEMO-001, enter a fictional customer, destination, and end user, then review the internal cost and "
+        "For each RFQ line, review the requirement, enter the offered value, choose a disposition, and cite a datasheet "
+        "page, certificate, or supplier reference. Open questions and deviations remain visible for engineering review."
+    )
+    st.page_link("pages/9_Technical_Review.py", label="Open Technical review", icon=":material/fact_check:")
+
+with section("6 · Build a quote", "Review source selection and internal pricing separately from the customer-facing quote."):
+    st.write(
+        "Select DEMO-001, confirm the chosen supplier for each line, enter a fictional customer, destination, and end user, then review the internal cost and "
         "margin table beside the customer prices. The default margin tiers are 35% below €1,000, 25% standard, "
         "and 18% above €20,000; the 12% floor blocks generation unless the approval control is enabled. "
         "Restricted or blank compliance details place the quote on hold."
@@ -59,14 +68,14 @@ with section("5 · Build a quote", "Review internal pricing separately from the 
     )
     st.page_link("pages/4_Quote_Builder.py", label="Open Quote Builder", icon=":material/receipt_long:")
 
-with section("6 · Track activity", "Use the review page to understand movement through the pipeline."):
+with section("7 · Track activity", "Use the review page to understand movement through the pipeline."):
     st.write(
         "Choose a date range to view recorded lead contacts, RFQs, supplier requests, quotes, outcomes, win rate, "
         "margin, and weekly activity. The reports only become useful after the demo workflow has been used."
     )
     st.page_link("pages/6_Review.py", label="Open Weekly review", icon=":material/insights:")
 
-with section("7 · Explore tenders", "Search public procurement notices when you choose to run a search."):
+with section("8 · Explore tenders", "Search public procurement notices when you choose to run a search."):
     st.write(
         "The tender page searches TED and selected UK portals on demand. Results are public notices, not verified "
         "sales opportunities. Review the original notice and attachments before creating an RFQ."

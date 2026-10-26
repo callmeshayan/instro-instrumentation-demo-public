@@ -249,6 +249,16 @@ TEMPLATES_DIR = ROOT / "templates"
 RFQ_COLUMNS = ["rfq_id", "customer", "received_date", "status", "value_eur", "notes"]
 COST_COLUMNS = ["rfq_id", "line", "supplier_id", "model", "unit_cost_eur", "freight_eur",
                 "duty_eur", "lead_time", "quote_ref", "valid_until"]
+TECHNICAL_REVIEW_COLUMNS = ["rfq_id", "line", "field", "requested_value", "offered_value", "status",
+                            "evidence_ref", "notes", "updated_at"]
+TECHNICAL_REVIEW_FIELDS = [
+    ("service", "Service / medium"), ("quantity", "Quantity"), ("process_connection", "Process connection"),
+    ("range", "Range and units"), ("accuracy", "Accuracy"), ("wetted_material", "Wetted material"),
+    ("output", "Output / protocol"), ("power", "Power"), ("hazardous_area_cert", "Hazardous-area certification"),
+    ("ip", "IP rating"), ("ambient_temp", "Ambient temperature"), ("process_temp", "Process temperature"),
+    ("display", "Display"), ("delivery_date", "Required delivery"), ("documents", "Required documents"),
+]
+TECHNICAL_REVIEW_STATUSES = ["Not reviewed", "Compliant", "Deviation", "Clarification needed", "Not applicable"]
 SUPPLIER_COLUMNS = ["supplier_id", "company", "country", "contact", "email", "brands", "categories",
                     "authorized", "typical_lead_time", "payment_terms", "notes"]
 QUOTE_LOG_COLUMNS = ["rfq_id", "sent_date", "value_eur", "margin", "quote_no", "version",

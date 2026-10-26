@@ -4,11 +4,13 @@ import pandas as pd
 import streamlit as st
 
 from app.core import (COST_COLUMNS, CURRENCIES, INCOTERMS, OUTCOMES, QUOTE_LOG_COLUMNS, RFQ_COLUMNS, ROOT,
+                      TECHNICAL_REVIEW_COLUMNS,
+                      SUPPLIER_COLUMNS,
                       SUPPLIER_REQUEST_COLUMNS, ComplianceHoldError,
                       apply_default_margins, approval_request_email, approve_quote, build_quote_lines,
                       carry_forward, compliance_hold, cover_email, customer_lines, default_deviations,
                       generate_quote, list_parsed_ids, load_parsed, load_products, load_seller, logo_path,
-                      mailto_link, mark_quote_sent, next_version, parsed_rfq_is_draft, previous_quote_lines, price_quote,
+                      landed_unit, mailto_link, mark_quote_sent, next_version, parsed_rfq_is_draft, previous_quote_lines, price_quote,
                       quote_summary, read_csv, reject_quote, set_quote_outcome, suggest_products)
 from app.ui import empty_state, page_header, status_badge, workflow_step, workflow_stepper
 
@@ -46,6 +48,20 @@ workflow_stepper(rfq_id, workflow_step(rfq_status, bool(lines), request_count, p
 if missing:
     st.warning(f"{len(missing)} open question(s) on this RFQ. They are listed as deviations unless you edit them.")
 
+technical_reviews = read_csv("technical_reviews.csv", TECHNICAL_REVIEW_COLUMNS)
+technical_reviews = technical_reviews[technical_reviews["rfq_id"].astype(str) == str(rfq_id)] \
+    if not technical_reviews.empty else technical_reviews
+if technical_reviews.empty:
+    st.warning("No saved technical review for this RFQ yet. Review requested versus offered specifications before finalizing the quote.")
+else:
+    open_checks = int(technical_reviews["status"].isin(["Not reviewed", "Clarification needed"]).sum())
+    deviations = int((technical_reviews["status"] == "Deviation").sum())
+    if open_checks or deviations:
+        st.warning(f"Technical review: {open_checks} check(s) need review or clarification; {deviations} deviation(s) recorded.")
+    else:
+        st.success(f"Technical review saved: {len(technical_reviews)} specification checks recorded.")
+st.page_link("pages/9_Technical_Review.py", label="Open technical review", icon=":material/fact_check:")
+
 base = build_quote_lines(lines, costs, rfq_id)
 prev_version, prev_lines = previous_quote_lines(rfq_id)
 use_prev = False
@@ -53,6 +69,60 @@ if prev_version:
     use_prev = st.checkbox(f"Start from v{prev_version} (keeps your margins, wording and models)", value=True)
 if use_prev:
     base = carry_forward(base, prev_lines)
+
+supplier_costs = costs[costs["rfq_id"].astype(str) == str(rfq_id)].copy() if not costs.empty else costs.copy()
+suppliers = read_csv("suppliers.csv", SUPPLIER_COLUMNS)
+supplier_names = dict(zip(suppliers["supplier_id"].astype(str), suppliers["company"].fillna("").astype(str))) \
+    if not suppliers.empty else {}
+supplier_qualified = dict(zip(suppliers["supplier_id"].astype(str), suppliers["authorized"].fillna("unknown").astype(str))) \
+    if not suppliers.empty else {}
+if not supplier_costs.empty:
+    with st.expander("Compare supplier offers and select the source for each quote line", expanded=True):
+        st.caption("The lowest landed cost is preselected as a starting point. Choose based on technical fit, qualification, lead time, and offer validity too.")
+        for idx, quote_line in base.iterrows():
+            line_no = str(quote_line["line"])
+            offers = supplier_costs[supplier_costs["line"].astype(str) == line_no].copy()
+            if offers.empty:
+                st.warning(f"Line {line_no}: no supplier offer saved yet.")
+                continue
+            offers["landed_unit_eur"] = offers.apply(landed_unit, axis=1)
+            current_supplier_value = quote_line.get("supplier_id")
+            current_supplier = "" if pd.isna(current_supplier_value) else str(current_supplier_value)
+            offer_ids = offers["supplier_id"].astype(str).tolist()
+            default_index = offer_ids.index(current_supplier) if current_supplier in offer_ids else int(offers["landed_unit_eur"].argmin())
+
+            def supplier_option_label(sid, offer_rows=offers):
+                offer = offer_rows[offer_rows["supplier_id"].astype(str) == sid].iloc[0]
+                landed = float(offer["landed_unit_eur"])
+                lead_value = offer.get("lead_time")
+                lead_time = "lead time not recorded" if pd.isna(lead_value) or not str(lead_value).strip() else str(lead_value)
+                qualified = supplier_qualified.get(sid, "unknown")
+                valid_until = offer.get("valid_until")
+                validity = ""
+                if pd.notna(valid_until) and str(valid_until).strip():
+                    expiry = pd.to_datetime(valid_until, errors="coerce")
+                    if pd.notna(expiry) and expiry.date() < date.today():
+                        validity = " · EXPIRED"
+                return (f"{sid} · {supplier_names.get(sid, 'Supplier')} · €{landed:,.2f}/unit · "
+                        f"{lead_time} · authorized: {qualified}{validity}")
+
+            selected_supplier = st.selectbox(
+                f"Line {line_no} · {quote_line.get('description', '')}",
+                offer_ids,
+                index=default_index,
+                format_func=supplier_option_label,
+                key=f"quote_supplier_{rfq_id}_{line_no}_{use_prev}",
+            )
+            chosen_offer = offers[offers["supplier_id"].astype(str) == selected_supplier].iloc[0]
+            def number_or_zero(value):
+                return 0.0 if pd.isna(value) else float(value)
+
+            base.loc[idx, "supplier_id"] = selected_supplier
+            base.loc[idx, "brand_model"] = "" if pd.isna(chosen_offer.get("model")) else str(chosen_offer.get("model"))
+            base.loc[idx, "unit_cost_eur"] = number_or_zero(chosen_offer.get("unit_cost_eur"))
+            base.loc[idx, "freight_eur"] = number_or_zero(chosen_offer.get("freight_eur"))
+            base.loc[idx, "duty_eur"] = number_or_zero(chosen_offer.get("duty_eur"))
+            base.loc[idx, "lead_time"] = "" if pd.isna(chosen_offer.get("lead_time")) else str(chosen_offer.get("lead_time"))
 base = apply_default_margins(base)
 st.caption(f"This will be v{next_version(rfq_id)}. Costs in EUR. Margin is a share of the sell price. "
            "Default tiers: 35% (< €1k), 25% standard, 18% (> €20k). Floor 12%.")

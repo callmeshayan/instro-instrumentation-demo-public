@@ -6,7 +6,9 @@ This is a public, fictional demonstration of the instrumentation sales workflow.
 
 ## Try the demo
 
-Open the **Tutorial** page in the sidebar, or follow the sample RFQ `DEMO-001` through Today → RFQs → Costs → Quote Builder → Weekly review. The tutorial explains each step and the app's limits.
+Open the **Tutorial** page in the sidebar, or follow the sample RFQ `DEMO-001` through Today → RFQs → Costs → Technical review → Quote Builder → Weekly review. The tutorial explains each step and the app's limits.
+
+The **Costs** page compares supplier offers by landed cost, lead time, offer validity, and recorded supplier qualification. The **Technical review** page records requested versus offered specifications, review decisions, evidence references, and notes per RFQ line. Quote Builder lets you select the supplier offer used for each line and shows whether technical checks remain open or have deviations.
 
 ## Run locally
 
