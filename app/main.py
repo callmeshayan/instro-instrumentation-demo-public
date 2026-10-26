@@ -28,6 +28,7 @@ with st.sidebar:
     st.divider()
 
 today = st.Page("Home.py", title="Today", icon=":material/today:", default=True)
+guide = st.Page("pages/0_Tutorial.py", title="Tutorial", icon=":material/menu_book:")
 leads = st.Page("pages/1_Leads.py", title="Leads", icon=":material/group:")
 rfqs = st.Page("pages/2_RFQs.py", title="RFQs", icon=":material/inbox:")
 costs = st.Page("pages/3_Costs.py", title="Costs", icon=":material/payments:")
@@ -39,6 +40,7 @@ tenders = st.Page("pages/8_Tenders.py", title="Tenders", icon=":material/travel_
 
 page = st.navigation(
     {
+        "Start here": [guide],
         "": [today],
         "Sales": [leads],
         "Deals": [rfqs, costs, quote_builder],

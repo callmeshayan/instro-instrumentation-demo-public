@@ -1,24 +1,22 @@
-# Instro Dashboard · Company Demo
+# Instro Dashboard · Public Company Demo
 
-This standalone demo bundle contains fictional data only. It excludes the Mac app's local data, secrets, customer files, supplier records, generated quotes, and Git history.
+**Live demo:** https://instro-demo.streamlit.app/
+
+This is a public, fictional demonstration of the instrumentation sales workflow. Anyone can open the site; visitors may be able to discover it through Streamlit as well as by URL. The source repository is public. Do not enter or upload real customer, supplier, employee, pricing, or tender data. Demo edits may be visible to other visitors and may reset when the hosted app restarts.
+
+## Try the demo
+
+Open the **Tutorial** page in the sidebar, or follow the sample RFQ `DEMO-001` through Today → RFQs → Costs → Quote Builder → Weekly review. The tutorial explains each step and the app's limits.
 
 ## Run locally
 
-Python 3.11+ is required. Install dependencies from requirements.txt, then run streamlit run app/main.py from this folder.
-
-## Deploy as a private web demo
-
-1. Create a new private GitHub repository for this bundle and upload these files. Do not use the Mac app repository.
-2. In Streamlit Community Cloud, create an app from that repository and select app/main.py as the entry point. Choose Python 3.11.
-3. Keep the app private and invite the intended company viewers by email.
-4. Check the deployed site before sharing its link.
-
-Community Cloud supports private apps with invited viewers. Local file storage is not guaranteed to persist, so demo edits can reset after restart. Do not use this bundle for live sales work or upload real RFQs, quotes, supplier information, or customer data.
+Python 3.11+ is required. Install dependencies from `requirements.txt`, then run `streamlit run app/main.py` from this folder.
 
 ## Demo boundaries
 
 - All customer, supplier, and product information is fictional and labeled DEMO.
-- Supplier costs and quote margins are visible to invited viewers.
-- TED searches run only after clicking Check now and can return real public notices.
-- macOS Vision OCR is unavailable on Linux-hosted web services. Selectable PDF text extraction remains available; scanned-PDF OCR requires macOS.
-- For operational use, deploy a separately reviewed private system with durable storage, backups, authentication, and a deliberate data migration plan.
+- Supplier costs and quote margins are visible in the app. Customer quote files omit internal costs and margins.
+- Supplier and customer emails are drafts; the app does not send them.
+- Tender searches run only when you choose **Check now** and can retrieve real public notices.
+- macOS Vision OCR is unavailable on the hosted Linux app. PDFs with selectable text can be extracted; scanned-PDF OCR requires macOS.
+- Community Cloud local-file storage is temporary. This demo is not a production CRM or secure data store.

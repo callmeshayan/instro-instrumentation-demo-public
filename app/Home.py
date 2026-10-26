@@ -10,6 +10,7 @@ from app.core import (COST_COLUMNS, LEAD_COLUMNS, QUOTE_LOG_COLUMNS, RFQ_COLUMNS
 from app.ui import empty_state, metric_cards, page_header, section, status_badge, toast
 
 page_header("Today", "Your next actions, ordered by urgency.")
+st.page_link("pages/0_Tutorial.py", label="Open the 5-minute demo tutorial", icon=":material/menu_book:")
 today = date.today()
 leads = read_csv("leads.csv", LEAD_COLUMNS)
 rfqs = read_csv("rfqs.csv", RFQ_COLUMNS)
