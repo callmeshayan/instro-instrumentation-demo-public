@@ -1,0 +1,7 @@
+seller_name,seller_company,seller_email,seller_phone,seller_address,seller_website,seller_vat,default_currency,default_payment_terms,default_validity_days,terms_text,logo_file,require_approval,approver_name,approver_email
+Demo Sales Representative,Demo Instrumentation Ltd,,,"Demo office, Cyprus",,,EUR,30 days from invoice,30,"1. Prices are per unit in the stated currency, excluding VAT and local taxes unless stated.
+2. Lead times are estimates from date of purchase order and are subject to supplier confirmation.
+3. Delivery per the stated Incoterms (ICC Incoterms 2020).
+4. Orders are subject to export-control and sanctions screening of the end user and destination.
+5. Specifications not confirmed by the customer (marked TBC) must be confirmed before order.
+6. Cancellation of confirmed orders may incur supplier charges.",,yes,Approver (demo),

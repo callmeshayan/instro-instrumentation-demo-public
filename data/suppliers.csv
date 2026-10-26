@@ -1,0 +1,2 @@
+supplier_id,company,country,contact,email,brands,categories,authorized,typical_lead_time,payment_terms,notes
+DEMO-S1,Demo supplier (fictional),Germany,,,DemoBrand,pressure transmitters; temperature transmitters,no,3-6 weeks,,DEMO ONLY · Fictional supplier record; not a real supplier.

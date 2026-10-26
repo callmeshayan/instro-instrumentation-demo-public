@@ -1,0 +1,55 @@
+{
+  "lines": [
+    {
+      "line": 1,
+      "tag": "PT-101",
+      "description": "DEMO \u00b7 Pressure transmitter",
+      "quantity": 2,
+      "service": "TBC",
+      "process_connection": "TBC",
+      "range": "TBC",
+      "accuracy": "TBC",
+      "wetted_material": "TBC",
+      "output": "TBC",
+      "power": "TBC",
+      "hazardous_area_cert": "TBC",
+      "ip": "TBC",
+      "ambient_temp": "TBC",
+      "process_temp": "TBC",
+      "display": "TBC",
+      "delivery_date": "TBC",
+      "documents": "Datasheet; certificate of conformity; calibration certificate",
+      "source_reference": "DEMO-SQ-001",
+      "missing": [
+        "Confirm range, accuracy, process connection, materials, output, power, hazardous-area certification, ingress rating, operating temperatures, display, and delivery date."
+      ]
+    },
+    {
+      "line": 2,
+      "tag": "TT-201",
+      "description": "DEMO \u00b7 Temperature transmitter with RTD Pt100",
+      "quantity": 5,
+      "service": "Temperature measurement",
+      "process_connection": "TBC",
+      "range": "TBC",
+      "accuracy": "TBC",
+      "wetted_material": "TBC",
+      "output": "TBC",
+      "power": "TBC",
+      "hazardous_area_cert": "TBC",
+      "ip": "TBC",
+      "ambient_temp": "TBC",
+      "process_temp": "TBC",
+      "display": "TBC",
+      "delivery_date": "TBC",
+      "documents": "Datasheet; certificate of conformity; calibration certificate",
+      "source_reference": "DEMO-SQ-001",
+      "missing": [
+        "Confirm range, accuracy, process connection, materials, output, power, hazardous-area certification, ingress rating, operating temperatures, display, and delivery date."
+      ]
+    }
+  ],
+  "missing": [
+    "DEMO ONLY \u00b7 Fictional training scenario; all specifications marked TBC require confirmation."
+  ]
+}
